@@ -1,0 +1,88 @@
+{
+    "name": "content-creator",
+    "displayName": "Content Creator",
+    "description": "An extension that is used to create markdown and html content for statically rendered sites.",
+    "version": "0.1.0",
+    "engines": {
+        "vscode": "^1.78.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [],
+    "main": "./out/src/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "creator.content.export",
+                "title": "Export",
+                "icon": "$(notebook-execute-all)"
+            },
+            {
+                "command": "creator.content.openSource",
+                "title": "Open Source",
+                "icon": "$(notebook-open-as-text)"
+            }
+        ],
+        "languages": [
+            {
+                "id": "json",
+                "extensions": [
+                    ".content"
+                ]
+            }
+        ],
+        "menus": {
+            "notebook/toolbar": [
+                {
+                    "command": "creator.content.export",
+                    "group": "navigation",
+                    "when": "resourceExtname == '.content'"
+                },
+                {
+                    "command": "creator.content.openSource",
+                    "group": "navigation",
+                    "when": "resourceExtname == '.content'"
+                }
+            ]
+        },
+        "notebooks": [
+            {
+                "id": "creator.content",
+                "type": "creator.content",
+                "displayName": "Content Creator",
+                "selector": [
+                    {
+                        "filenamePattern": "*.content"
+                    }
+                ]
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "lint": "eslint . --ext ts",
+        "pretest": "npm run compile && npm run lint",
+        "test": "node ./out/test/runTest.js",
+        "test:recompile": "npm run pretest && npm run test"
+    },
+    "dependencies": {
+        "js-yaml": "^4.1.0"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "@types/js-yaml": "^4.0.5",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "16.x",
+        "@types/vscode": "^1.78.0",
+        "@typescript-eslint/eslint-plugin": "^5.56.0",
+        "@typescript-eslint/parser": "^5.56.0",
+        "@vscode/test-electron": "^2.3.0",
+        "eslint": "^8.36.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.2.0",
+        "typescript": "^5.0.4"
+    }
+}
