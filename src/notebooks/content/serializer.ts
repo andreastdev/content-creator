@@ -2,21 +2,13 @@ import * as vscode from "vscode";
 import { TextDecoder, TextEncoder } from "util";
 
 import { NotebookSerializer } from "../../abstractions";
-import { ContentCellCollection, ContentFlag } from "./types";
 import { tryCatch } from "../../utilities";
-
-enum Language {
-    css = "css",
-    html = "html",
-    markdown = "markdown",
-    yaml = "yaml"
-}
+import { ContentCellCollection } from "./types";
+import { generateCellFlag } from "./helpers";
 
 export class ContentSerializer implements NotebookSerializer {
     public readonly id = "creator.content";
     public readonly type = "notebook";
-
-    private readonly _metadataCellIdentifier = "# metadata";
 
     @tryCatch(() => new vscode.NotebookData([]))
     public async deserializeNotebook(
@@ -56,27 +48,12 @@ export class ContentSerializer implements NotebookSerializer {
                 kind: cell.kind,
                 language: cell.languageId,
                 value: cell.value,
-                flag: this.generateCellFlag(cell)
+                flag: generateCellFlag(cell)
             });
         }
 
         return new TextEncoder().encode(
             JSON.stringify(contentNotebookData, null, 4)
         );
-    }
-
-    private generateCellFlag(cellData: vscode.NotebookCellData): ContentFlag {
-        if (!Object.values<string>(Language).includes(cellData.languageId)) {
-            return "code";
-        }
-
-        if (cellData.languageId === Language.yaml) {
-            return cellData.value.split("\r")[0] ===
-                this._metadataCellIdentifier
-                ? "metadata"
-                : "code";
-        }
-
-        return "content";
     }
 }
