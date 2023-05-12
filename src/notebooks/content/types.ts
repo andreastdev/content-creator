@@ -1,5 +1,11 @@
 import * as vscode from "vscode";
 
+export enum Language {
+    html = "html",
+    markdown = "markdown",
+    yaml = "yaml"
+}
+
 export type ContentCellCollection = {
     cells: ContentCell[];
 };

@@ -1,6 +1,6 @@
+.vscode-test/
 out
 dist
 node_modules
-.vscode-test/
-test-workspace/
+test-workspace
 *.vsix
